@@ -1,0 +1,19 @@
+# Emscripten build configuration
+CXX = em++
+CXXFLAGS = -std=c++17 -O2 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2
+CXXFLAGS += --preload-file assets
+CXXFLAGS += -s ALLOW_MEMORY_GROWTH=1
+CXXFLAGS += -s EXPORTED_FUNCTIONS='["_main"]'
+CXXFLAGS += -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'
+
+SOURCES = $(wildcard src/*.cpp)
+TARGET = build/crossroads.html
+
+$(TARGET): $(SOURCES)
+	mkdir -p build
+	$(CXX) $(CXXFLAGS) $(SOURCES) -o $(TARGET)
+
+clean:
+	rm -rf build/*
+
+.PHONY: clean
